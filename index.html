@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lake Executor</title>
+    <link rel="icon" type="image/x-icon" href="image (1).ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-black: #020408; 
+            --bg-blue-dark: #050a18;
+            --accent-blue: #00d2ff;
+            --btn-grad: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --card-bg: #080c16;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Prevent scrolling while modal is active */
+        body.modal-active {
+            overflow: hidden;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: filter 0.3s ease;
+        }
+
+        /* Disclaimer Modal */
+        #disclaimer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px); /* Deep blur effect */
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .squircle-modal {
+            background: var(--card-bg);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 40px; /* Squircle appearance */
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 210, 255, 0.1);
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-title {
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .modal-text {
+            color: var(--text-dim);
+            line-height: 1.6;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .modal-text b {
+            color: var(--text-main);
+        }
+
+        .understand-btn {
+            background: var(--btn-grad);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .understand-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(2, 4, 8, 0.9);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Small Lake Image in Corner */
+        .nav-logo-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at center, var(--bg-blue-dark) 0%, var(--bg-black) 100%);
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        /* Download Button */
+        .download-btn {
+            background: var(--btn-grad);
+            color: white;
+            padding: 20px 60px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 210, 255, 0.5);
+        }
+
+        .os-support {
+            margin-top: 20px;
+            color: var(--accent-blue);
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Features */
+        .features {
+            padding: 100px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            background-color: var(--bg-black);
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card h3 {
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+        }
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body class="modal-active">
+
+    <div id="disclaimer-overlay">
+        <div class="squircle-modal">
+            <h2 class="modal-title">DISCLAIMER</h2>
+            <p class="modal-text">
+                To ensure a successful installation and prevent execution errors, please <b>temporarily disable your antivirus software.</b> 
+                <br><br>
+                Because of the way executors interact with system memory, they are often flagged as <b>False Positives</b>. If you have concerns, we encourage you to research the nature of these flags before proceeding.
+            </p>
+            <button class="understand-btn" onclick="closeModal()">I Understand</button>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/DzZj0M5C/2c09a5bc-638f-4e39-bb94-167efa33dbfc-8.png" class="nav-logo-img" alt="Lake">
+            <span class="logo-text">LAKE</span>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>LAKE</h1>
+        <p class="tagline">The most powerful executor on the market.</p>
+        
+        <a href="https://limewire.com/d/gdaLS#OqtOd78syK" class="download-btn">DOWNLOAD</a>
+        
+        <p class="os-support">SUPPORTS WINDOWS 11 / 10</p>
+    </div>
+
+    <section class="features">
+        <div class="card">
+            <h3>Fast</h3>
+            <p>Immediate execution with our custom-built optimization engine.</p>
+        </div>
+        <div class="card">
+            <h3>Secure</h3>
+            <p>Stay undetected with our advanced bypass methods.</p>
+        </div>
+        <div class="card">
+            <h3>Clean</h3>
+            <p>A minimalist interface designed for the best user experience.</p>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 LAKE SOFTWARE
+    </footer>
+
+    <script>
+        function closeModal() {
+            const overlay = document.getElementById('disclaimer-overlay');
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.3s ease';
+            
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                document.body.classList.remove('modal-active');
+            }, 300);
+        }
+    </script>
+
+</body>
+</html>
